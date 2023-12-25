@@ -4,11 +4,12 @@ import { FaLock } from "react-icons/fa";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import axios from 'axios';
 
-function Sign() {
-  const [email, setEmail] = useState('');
+function Signup() {
+  const [username, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -18,19 +19,28 @@ function Sign() {
     setPassword(e.target.value);
   };
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Send a POST request to your backend
+      const response = await axios.post('http://localhost:3000/login', {
+        username: username,
+        password: password,
+      });
+
+      navigate('/dashboard')
+    }
+
+
+    catch (error) {
+      console.error('Error:', error.data);
+    }
   };
 
-  const handleSignUp = () => {
-    // Implement sign-up logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Confirm Password:', confirmPassword);
-  };
-  const navigate = useNavigate()
-  const handleOnclickSignup = () => {
-    navigate('/signup');
+  const navigate = useNavigate();
+  const handleOnclickSignIn = () => {
+    navigate('/signin')
   }
 
   return (
@@ -39,14 +49,13 @@ function Sign() {
       <div className='h-full w-full absolute flex' >
         <div className='w-[30%] h-[70%] bg-[#21BF73] flex flex-col  mt-28 ml-40 text-white'>
           <span className='text-4xl mt-24 self-center'>
-            Welcome Back
+            Hello Friend
           </span>
           <span className='mt-4 ml-16 self-center w-[60%]'>
-
-            signup to start writing your diary
+            Sign up to create your personal diary on Diary.com
           </span>
           <button className='border-2 w-40 p-2
-          text-sm mt-36 self-center rounded-full h-16' onClick={handleOnclickSignup}>
+          text-sm mt-16 self-center rounded-full h-16' onClick={handleOnclickSignIn}>
             Sign Up
           </button>
 
@@ -61,9 +70,9 @@ function Sign() {
                 <MdEmail />
               </span>
               <input
-                type="email"
-                placeholder="Email"
-                value={email}
+                type="username"
+                placeholder="Username"
+                value={username}
                 onChange={handleEmailChange}
                 className="pl-10 border rounded-md py-2 px-3 w-80"
               />
@@ -80,19 +89,8 @@ function Sign() {
                 className="pl-10 border rounded-md py-2 px-3 w-80"
               />
             </div>
-            <div className="input-group mb-4">
-              <span className="icon absolute">
-                <FaLock />
-              </span>
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-                className="pl-10 border rounded-md py-2 px-3 w-80"
-              />
-            </div>
-            <button onClick={handleSignUp} className="sign-in-btn bg-green-500 text-white rounded-full p-4 w-40 mt-12">
+            <button onClick={handleSignIn} className="sign-in-btn bg-green-500 text-white rounded-full p-4 w-40
+            mt-12">
               Sign In
             </button>
           </div>
@@ -103,4 +101,4 @@ function Sign() {
   )
 }
 
-export default Sign
+export default Signup

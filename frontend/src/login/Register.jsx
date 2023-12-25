@@ -1,16 +1,20 @@
-import React from 'react'
-import { MdEmail } from "react-icons/md";
-import { FaLock } from "react-icons/fa";
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { MdEmail } from 'react-icons/md';
+import { FaUser, FaLock } from 'react-icons/fa'; // Icons for username and password
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import axios from 'axios';
 
-function Signup() {
-  const [email, setEmail] = useState('');
+function Sign() {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState(''); // Added state for email
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleEmailChange = (e) => {
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleEmailChange = (e) => { // Added handler for email change
     setEmail(e.target.value);
   };
 
@@ -18,20 +22,27 @@ function Signup() {
     setPassword(e.target.value);
   };
 
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Send a POST request to your backend
+      const response = await axios.post('http://localhost:3000/signup', {
+        username: username,
+        email: email, // Included email in the request payload
+        password: password,
+      });
+      alert("registered successfully");
+      console.log(response.data)
+    } catch (error) {
+      alert(error.response.data.message)
+    }
   };
 
-  const handleSignUp = () => {
-    // Implement sign-up logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Confirm Password:', confirmPassword);
-  };
   const navigate = useNavigate();
-  const handleOnclickSignIn = () => {
-    navigate('/signin')
-  }
+  const handleOnclickSignup = () => {
+    navigate('/signup');
+  };
 
   return (
     <>
@@ -39,13 +50,14 @@ function Signup() {
       <div className='h-full w-full absolute flex' >
         <div className='w-[30%] h-[70%] bg-[#21BF73] flex flex-col  mt-28 ml-40 text-white'>
           <span className='text-4xl mt-24 self-center'>
-            Hello Friend
+            Welcome Back
           </span>
           <span className='mt-4 ml-16 self-center w-[60%]'>
-            Sign in to create your personal diary on Diary.com
+
+            sign in to start writing your diary
           </span>
           <button className='border-2 w-40 p-2
-          text-sm mt-16 self-center rounded-full h-16' onClick={handleOnclickSignIn}>
+          text-sm mt-36 self-center rounded-full h-16' onClick={handleOnclickSignup}>
             Sign In
           </button>
 
@@ -55,6 +67,18 @@ function Signup() {
             Sign Up
           </span>
           <div className="flex flex-col items-center">
+            <div className="input-group mb-4">
+              <span className="icon absolute">
+                <FaUser />
+              </span>
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={handleUsernameChange}
+                className="pl-10 border rounded-md py-2 px-3 w-80"
+              />
+            </div>
             <div className="input-group mb-4">
               <span className="icon absolute">
                 <MdEmail />
@@ -79,8 +103,7 @@ function Signup() {
                 className="pl-10 border rounded-md py-2 px-3 w-80"
               />
             </div>
-            <button onClick={handleSignUp} className="sign-in-btn bg-green-500 text-white rounded-full p-4 w-40
-            mt-12">
+            <button onClick={handleSignUp} className="sign-in-btn bg-green-500 text-white rounded-full p-4 w-40 mt-12">
               Sign Up
             </button>
           </div>
@@ -91,4 +114,4 @@ function Signup() {
   )
 }
 
-export default Signup
+export default Sign
