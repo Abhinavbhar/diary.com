@@ -21,7 +21,7 @@ function App() {
         <Route path="/signin" element={<Sign />} />
         <Route path="/signup" element={<Signup />} />
         <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/addnentry' element={<EntryComponent />} />
+        <Route path='/addnewentry' element={<EntryComponent />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

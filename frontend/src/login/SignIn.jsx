@@ -9,6 +9,7 @@ import axios from 'axios';
 function Signup() {
   const [username, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
 
   const handleEmailChange = (e) => {
@@ -28,7 +29,11 @@ function Signup() {
         username: username,
         password: password,
       });
+      localStorage.setItem('username', response.data.user.username);
+      const storedValue = localStorage.getItem('username');
 
+
+      alert("login successfull")
       navigate('/dashboard')
     }
 
@@ -38,7 +43,7 @@ function Signup() {
     }
   };
 
-  const navigate = useNavigate();
+
   const handleOnclickSignIn = () => {
     navigate('/signin')
   }
