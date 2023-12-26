@@ -5,7 +5,7 @@ const loadArticles = async (req, res) => {
 
     res.status(200).json({ articles });
   } catch (error) {
-    console.error('Error loading articles:', error);
+
     res.status(500).json({ error: 'Unable to load articles' });
   }
 };
