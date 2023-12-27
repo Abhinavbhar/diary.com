@@ -51,22 +51,24 @@ function Signup() {
   return (
     <>
       <Navbar></Navbar>
-      <div className='h-full w-full absolute flex' >
-        <div className='w-[30%] h-[70%] bg-[#21BF73] flex flex-col  mt-28 ml-40 text-white'>
-          <span className='text-4xl mt-24 self-center'>
+      <span>use these in Sign In if you dont want to signUp <br />
+        username-"u",
+        password-"p"  <br />{`(please dont delete any default entries)`}
+      </span>
+      <div className='h-full w-full absolute flex flex-col md:flex-row items-center justify-center'>
+        <div className='w-full md:w-3/5 h-full md:h-4/5 bg-[#21BF73] flex flex-col justify-center items-center text-white'>
+          <span className='text-3xl md:text-4xl mt-8 self-center'>
             Hello Friend
           </span>
-          <span className='mt-4 ml-16 self-center w-[60%]'>
+          <span className='mt-4 text-center md:text-left'>
             Sign up to create your personal diary on Diary.com
           </span>
-          <button className='border-2 w-40 p-2
-          text-sm mt-16 self-center rounded-full h-16' onClick={handleOnclickSignIn}>
+          <button className='border-2 w-32 md:w-40 p-2 text-sm md:text-base mt-8 md:mt-16 rounded-full h-12 md:h-16' onClick={handleOnclickSignIn}>
             Sign Up
           </button>
-
         </div>
-        <div className='w-[40%] h-[70%] bg-[#FFE5E5] flex flex-col  mt-28 mr-40'>
-          <span className='text-4xl self-center mt-8 text-[#21BF73] mb-12'>
+        <div className='w-full md:w-2/5 h-full md:h-4/5 bg-[#FFE5E5] flex flex-col justify-center items-center mt-4 md:mt-0'>
+          <span className='text-3xl md:text-4xl self-center mt-8 text-[#21BF73] mb-6'>
             Sign In
           </span>
           <div className="flex flex-col items-center">
@@ -79,7 +81,7 @@ function Signup() {
                 placeholder="Username"
                 value={username}
                 onChange={handleEmailChange}
-                className="pl-10 border rounded-md py-2 px-3 w-80"
+                className="pl-10 border rounded-md py-2 px-3 w-full md:w-80 max-w-xs"
               />
             </div>
             <div className="input-group mb-4">
@@ -91,17 +93,17 @@ function Signup() {
                 placeholder="Password"
                 value={password}
                 onChange={handlePasswordChange}
-                className="pl-10 border rounded-md py-2 px-3 w-80"
+                className="pl-10 border rounded-md py-2 px-3 w-full md:w-80 max-w-xs"
               />
             </div>
-            <button onClick={handleSignIn} className="sign-in-btn bg-green-500 text-white rounded-full p-4 w-40
-            mt-12">
+            <button onClick={handleSignIn} className="sign-in-btn bg-green-500 text-white rounded-full p-3 md:p-4 w-28 md:w-40 mt-8 md:mt-12">
               Sign In
             </button>
           </div>
         </div>
-
       </div>
+
+
     </>
   )
 }

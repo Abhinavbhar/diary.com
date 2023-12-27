@@ -4,30 +4,60 @@ import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [dataEntry, setDataEntry] = useState({ articles: { titles: [], descriptions: [], dates: [] } });
+  const storedUsername = localStorage.getItem('username');
+  const navigate = useNavigate();
+
+  const fetchDashboardData = async () => {
+    try {
+      if (storedUsername) {
+        const response = await axios.get(`http://localhost:3000/dashboard?username=${storedUsername}`);
+        console.log('Dashboard data:', response);
+        setDataEntry(response.data.diaryEntry); // Assuming the response contains a 'diaryEntry' object
+      } else {
+        console.error('Username not found in storage');
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const storedUsername = localStorage.getItem('username');
-
-        if (storedUsername) {
-          const response = await axios.get(`http://localhost:3000/dashboard?username=${storedUsername}`);
-          console.log('Dashboard data:', response);
-          setDataEntry(response.data.diaryEntry); // Assuming the response contains a 'diaryEntry' object
-        } else {
-          console.error('Username not found in storage');
-        }
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-      }
-    };
-
     fetchDashboardData();
   }, []);
-  const navigate = useNavigate()
+
   const handlePlusClick = () => {
-    navigate('/addnewentry')
-  }
+    navigate('/addnewentry');
+  };
+
+  const fetchDataAndRefresh = async () => {
+    await fetchDashboardData();
+  };
+
+  const onClickDelete = async (index, event) => {
+    event.preventDefault();
+
+    try {
+      const storedUsername = localStorage.getItem('username');
+      const response = await axios.delete("http://localhost:3000/deleteByIndex", {
+        data: {
+          username: storedUsername,
+          date: dataEntry.articles.dates[index]
+        }
+      });
+
+      console.log(response.data); // Log the response data if needed
+
+      // If the deletion was successful, update the UI by refreshing the articles
+      if (response.status === 200) {
+        // Call the function to refetch articles and update state
+        await fetchDataAndRefresh();
+      }
+
+      // Perform additional actions based on the response if required
+    } catch (error) {
+      console.error('Error:', error.response); // Log any errors or response data
+    }
+  };
 
   return (
 
@@ -55,6 +85,9 @@ const Dashboard = () => {
                   ? `${dataEntry.articles.descriptions[index].substring(0, 90)}...`
                   : dataEntry.articles.descriptions[index]}
               </p>
+              <button className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-12' onClick={(event) => onClickDelete(index, event)} value={index}>
+                Delete Entry
+              </button>
             </div>
           </div>
         ))}
