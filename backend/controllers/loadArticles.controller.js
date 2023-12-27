@@ -18,8 +18,8 @@ const loadArticlesByUser = async (req, res, next) => { // Include 'next' paramet
     // Return a success message or any specific response as needed
     res.status(200).json({ diaryEntry });
   } catch (error) {
-    // Pass any errors to the error handling middleware
-    next(error); // Use 'next' to pass the error to the next middleware
+
+    res.status(500).json({ error: 'Unable to load articles' });
   }
 };
 
